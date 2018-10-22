@@ -6,17 +6,22 @@ import requests
 from PIL import Image
 from selenium import webdriver
 from selenium.webdriver import ActionChains
-
+from selenium.webdriver.chrome.options import Options
 
 class Bilibili(object):
     """selenium自动登陆bilibili"""
 
-    def __init__(self, name, password):
+    def __init__(self, name, password, headless=False):
         """初始化"""
         self.url = 'https://passport.bilibili.com/login'
         self.name = name
         self.password = password
-        self.browser = webdriver.Chrome()
+        self.chrome_options = Options()
+        self.chrome_options.add_argument('--headless')
+        if headless:
+            self.browser = webdriver.Chrome(chrome_options=self.chrome_options)
+        else:
+            self.browser = webdriver.Chrome()
 
     def open_web_page(self):
         """打开网页"""
@@ -133,13 +138,13 @@ class Bilibili(object):
         t = 0.32  # 单位时间
         track = []  # 存放轨迹
         current = 0  # 当前位置
-        mid_distance = distance * 4 / 5
+        mid_distance = distance * 2 / 3
         distance += 5  # 先过一点再滑动回来
         while current < distance:
             if current < mid_distance:
-                a = 4.5
+                a = 4.3
             else:
-                a = - 5.6
+                a = - 5.2
             v0 = v
             s = v0 * t + 1 / 2 * a * t * t
             current += s
@@ -153,6 +158,7 @@ class Bilibili(object):
             track.append(-2)
         for i in range(3):
             track.append(-1)
+        track.append(-1)
         print('移动轨迹计算完成')
         return track
 
@@ -191,6 +197,8 @@ class Bilibili(object):
                 else:
                     print('登录成功')
                     break
+                print('登录失败，进行下一次重试')
+                print('*'*30)
             except:
                 print('未知错误')
                 break
@@ -198,6 +206,6 @@ class Bilibili(object):
 
 
 if __name__ == '__main__':
-    bilibil = Bilibili('your user_name ', 'your password')
+    bilibil = Bilibili('your user_name ', 'your password', True)
 
     bilibil.login()
