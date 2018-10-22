@@ -94,22 +94,12 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-# 2.1  配置去重类: 用于把请求的指纹数据存储到Redis的set集合中
+# Request去重的类
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-# 2.1 配置调度器类: 用于把请求对象序列化为二进制数据, 存储到Redis的zset集合中
+# 调度器
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
-# 2.2 配置去重数据和请求数据是否要持久化:
-#  True就表示当前程序结束了, 请求和指纹数据依然会保存在Redis数据中
-#  False: 程序结束的时候, 就会删除Redis数据中的请求和指纹数据.
+# 是否持久化存储
 SCHEDULER_PERSIST = True
-# 2.3(可选) 配置使用Redis管道, 把抓取到的数据存储到Redis数据看中
-# ITEM_PIPELINES = {
-#     'scrapy_redis.pipelines.RedisPipeline': 400,
-# }
-# 2.4 配置Redis数据库连接
-# 2.4.1: 方式1: 分别配置IP和端口号
-# REDIS_HOST = '127.0.0.1'
-# REDIS_PORT = 6379
 
-# 2.4.2: 方式2: 配置RedisURL (reids数据库)
+# 配置Redis数据库链接
 REDIS_URL = 'redis://127.0.0.1:6379/10'

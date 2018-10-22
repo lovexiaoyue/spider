@@ -23,7 +23,9 @@ class MobilePipeline(object):
     def process_item(self, item, spider):
         """将数据保存"""
         if spider.name == 'amazon':
-            self.mobile.save(dict(item))
+            t = self.mobile.find_one({'sku_url':item['sku_url']})
+            if t is None:
+                self.mobile.save(dict(item))
 
     def close_spider(self, spider):
         """spider关闭时断开数据库连接"""
